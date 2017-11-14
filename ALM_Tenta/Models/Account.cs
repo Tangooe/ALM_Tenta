@@ -11,6 +11,7 @@ namespace ALM_Tenta.Models
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
 
-        public IList<Transaction> Transactions { get; set; }
+        public ICollection<Transaction> SenderTransactions { get; set; }
+        public ICollection<Transaction> RecipentTransactions { get; set; }
     }
 }

@@ -14,6 +14,6 @@ namespace ALM_Tenta.Models
         public string PostalCode { get; set; }
         public string Country { get; set; }
         public string PhoneNumber { get; set; }
-        public IList<Account> Accounts { get; set; }
+        public ICollection<Account> Accounts { get; set; }
     }
 }
