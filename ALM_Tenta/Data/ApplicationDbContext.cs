@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ALM_Tenta.Models;
+﻿using ALM_Tenta.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ALM_Tenta.Data
