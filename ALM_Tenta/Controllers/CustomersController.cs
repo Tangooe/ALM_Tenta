@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ALM_Tenta.Data;
+using ALM_Tenta.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using ALM_Tenta.Data;
-using ALM_Tenta.Models;
 
 namespace ALM_Tenta.Controllers
 {
@@ -34,6 +31,7 @@ namespace ALM_Tenta.Controllers
             }
 
             var customer = await _context.Customers
+                .Include(c => c.Accounts)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
@@ -54,7 +52,9 @@ namespace ALM_Tenta.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CustomerNumber,OrganisationNumber,Name,StreetAddress,City,State,PostalCode,Country,PhoneNumber")] Customer customer)
+        public async Task<IActionResult> Create(
+            [Bind("Id,OrganisationNumber,Name,StreetAddress,City,State,PostalCode,Country,PhoneNumber")]
+            Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,9 @@ namespace ALM_Tenta.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerNumber,OrganisationNumber,Name,StreetAddress,City,State,PostalCode,Country,PhoneNumber")] Customer customer)
+        public async Task<IActionResult> Edit(int id,
+            [Bind("Id,OrganisationNumber,Name,StreetAddress,City,State,PostalCode,Country,PhoneNumber")]
+            Customer customer)
         {
             if (id != customer.Id)
             {
@@ -125,10 +127,17 @@ namespace ALM_Tenta.Controllers
             }
 
             var customer = await _context.Customers
+                .Include(c => c.Accounts)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
                 return NotFound();
+            }
+
+            if (customer.Accounts.Sum(a => a.Balance) != 0)
+            {
+                TempData["Message"] = "Cannot remove a customer with money on their accounts";
+                return View(nameof(Index), await _context.Customers.ToListAsync());
             }
 
             return View(customer);
@@ -140,6 +149,7 @@ namespace ALM_Tenta.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var customer = await _context.Customers.SingleOrDefaultAsync(m => m.Id == id);
+
             _context.Customers.Remove(customer);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
