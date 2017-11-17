@@ -76,6 +76,7 @@
             <th>
                 Balance
             </th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -88,11 +89,16 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Balance)
                 </td>
+                <td>
+                    <a class="text-danger"><i class="glyphicon glyphicon-remove"></i></a>
+                </td>
             </tr>
         }
         </tbody>
     </table>
 </div>
+<a class="btn btn-primary">Create Account</a>
+<hr/>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
