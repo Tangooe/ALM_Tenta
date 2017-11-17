@@ -17,6 +17,11 @@ namespace ALM_Tenta.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Customer>()
+                .HasMany(c => c.Accounts)
+                .WithOne(a => a.Customer)
+                .HasForeignKey(a => a.CustomerId);
+
             builder.Entity<Account>()
                 .HasMany(a => a.SenderTransactions)
                 .WithOne(s => s.Sender)
