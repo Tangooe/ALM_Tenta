@@ -47,7 +47,7 @@ namespace ALM_Tenta.Data
         {
             return new Account
             {
-                Id = int.Parse(fields[0]),
+                AccountNumber = int.Parse(fields[0]),
                 CustomerId = int.Parse(fields[1]),
                 Balance = decimal.Parse(fields[2])
             };
@@ -57,7 +57,7 @@ namespace ALM_Tenta.Data
         {
             return new Customer
             {
-                CustomerNumber = int.Parse(fields[0]),
+                Id = int.Parse(fields[0]),
                 OrganisationNumber = fields[1],
                 Name = fields[2],
                 StreetAddress = fields[3],
