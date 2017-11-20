@@ -9,13 +9,12 @@ namespace ALM_Tenta.Data
 {
     public static class DbInitializer
     {
-        public static void Initialize(ApplicationDbContext context, IHostingEnvironment environment)
+        public static void Initialize(ApplicationDbContext context, string path)
         {
             if (context.Customers.Any())
                 return;
 
-            var filePath = Path.Combine(environment.ContentRootPath, "Data/bankdata.txt");
-            var bankData = ReadBankDataFromFile(filePath);
+            var bankData = ReadBankDataFromFile(path);
 
             context.Customers.AddRange(bankData.Customers);
             context.Accounts.AddRange(bankData.Accounts);

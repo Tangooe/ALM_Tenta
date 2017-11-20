@@ -1,4 +1,5 @@
-﻿using ALM_Tenta.Data;
+﻿using System.IO;
+using ALM_Tenta.Data;
 using ALM_Tenta.Models;
 using ALM_Tenta.Serrvices;
 using Microsoft.AspNetCore.Builder;
@@ -62,7 +63,7 @@ namespace ALM_Tenta
                     template: "{controller=Customers}/{action=Index}/{id?}");
             });
 
-            DbInitializer.Initialize(context, _environment);
+            DbInitializer.Initialize(context, Path.Combine(_environment.ContentRootPath, "Data/bankdata.txt"));
         }
     }
 }
