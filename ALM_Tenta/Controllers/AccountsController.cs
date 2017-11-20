@@ -221,9 +221,53 @@ namespace ALM_Tenta.Controllers
             return RedirectToAction(nameof(Details), "Customers", new { id = account.CustomerId });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Transfer(int customerId)
+        {
+            var accounts = await _context.Accounts.Where(a => a.CustomerId == customerId).ToListAsync();
+
+            return View(new TransferViewModel
+            {
+                SenderAccounts = new SelectList(accounts, "Id", "Name"),
+                ReciepentAccounts = new SelectList(await _context.Accounts.ToListAsync(), "Id", "Name"),
+                Amount = 0
+            });
+        }
+        [HttpPost]
+        public async Task<IActionResult> Transfer(TransferViewModel model)
+        {
+            var account = await _context.Accounts.SingleOrDefaultAsync(m => m.Id == model.SenderAccountId);
+
+            if (account.Withdrawal(model.Amount))
+            {
+                var reciepentAccount =
+                    await _context.Accounts.SingleOrDefaultAsync(a => a.Id == model.ReciepentAccountId);
+
+                reciepentAccount.Deposit(model.Amount);
+                await _context.SaveChangesAsync();
+
+                TempData["Message"] = $"{model.Amount} has been transfered from account {account.AccountNumber} to account {reciepentAccount.AccountNumber}";
+                return RedirectToAction(nameof(Details), "Customers", new { id = account.CustomerId });
+            }
+
+            TempData["Message"] = $"Failed to withdraw {model.Amount}:- from account {account.AccountNumber}";
+            return RedirectToAction(nameof(Details), "Customers", new { id = account.CustomerId });
+        }
+
         private bool AccountExists(int id)
         {
             return _context.Accounts.Any(e => e.Id == id);
         }
+    }
+
+    public class TransferViewModel
+    {
+        public int SenderAccountId { get; set; }
+        public SelectList SenderAccounts { get; set; }
+
+        public int ReciepentAccountId { get; set; }
+        public SelectList ReciepentAccounts { get; set; }
+
+        public decimal Amount { get; set; }
     }
 }

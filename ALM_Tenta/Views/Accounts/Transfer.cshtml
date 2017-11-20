@@ -1,0 +1,31 @@
+﻿@using ALM_Tenta.View_Models
+@model ALM_Tenta.Controllers.TransferViewModel
+@{
+    ViewData["Title"] = "Deposit";
+}
+<h2>Deposit</h2>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Transfer">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SenderAccountId" class="control-label"></label>
+                <select asp-for="SenderAccountId" class="form-control" asp-items="@Model.SenderAccounts"></select>
+                <span asp-validation-for="SenderAccountId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReciepentAccountId" class="control-label"></label>
+                <select asp-for="ReciepentAccountId" class="form-control" asp-items="@Model.ReciepentAccounts"></select>
+                <span asp-validation-for="ReciepentAccountId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
