@@ -7,6 +7,18 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form asp-action="Index">
+    <div class="form-group">
+        <div id="searchCustomers" class="input-group">
+            <input asp-action="Index" name="searchFilter" class="form-control" placeholder="Search Customers"/>
+            <span class="input-group-addon">
+                <i class="glyphicon glyphicon-search"></i>
+            </span>
+        </div>
+    </div>
+
+</form>
+
 <table class="table">
     <thead>
         <tr>

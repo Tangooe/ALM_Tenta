@@ -17,9 +17,14 @@ namespace ALM_Tenta.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchFilter = null)
         {
-            return View(await _context.Customers.ToListAsync());
+            if (string.IsNullOrWhiteSpace(searchFilter))
+                return View(await _context.Customers.ToListAsync());
+            else
+                return View(await _context.Customers
+                    .Where(c => c.Name.ToLower().Contains(searchFilter.ToLower()))
+                    .ToListAsync());
         }
 
         // GET: Customers/Details/5
