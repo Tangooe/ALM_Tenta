@@ -1,5 +1,7 @@
-﻿using ALM_Tenta.Data;
+﻿using System.Collections.Generic;
+using ALM_Tenta.Data;
 using ALM_Tenta.Models;
+using ALM_Tenta.View_Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -167,6 +169,28 @@ namespace ALM_Tenta.Controllers
             _context.Accounts.Remove(account);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Deposit(int customerId)
+        {
+            var accounts = await _context.Accounts.Where(a => a.CustomerId == customerId).ToListAsync();
+
+            return View(new DepositViewModel
+            {
+                Accounts = new SelectList(accounts, "Id", "Name"),
+                Amount = 0
+            });
+        }
+        [HttpPost]
+        public async Task<IActionResult> Deposit(DepositViewModel model)
+        {
+            var account = await _context.Accounts.SingleOrDefaultAsync(m => m.Id == model.Id);
+            account.Deposit(model.Amount);
+            await _context.SaveChangesAsync();
+
+            TempData["Message"] = $"{model.Amount} has been deposited to account {account.AccountNumber}";
+            return RedirectToAction(nameof(Details), "Customers", new { id = account.CustomerId });
         }
 
         private bool AccountExists(int id)

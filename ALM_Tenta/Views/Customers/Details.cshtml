@@ -66,6 +66,9 @@
         </dd>
     </dl>
 </div>
+<a asp-controller="Accounts" asp-action="Deposit" asp-route-customerId="@Model.Id" class="btn btn-primary">Deposit</a>
+<a asp-controller="Accounts" asp-action="Withdrawal" asp-route-customerId="@Model.Id" class="btn btn-primary">Withdrawal</a>
+<a asp-controller="Accounts" asp-action="Transfer" asp-route-customerId="@Model.Id" class="btn btn-primary">Transfer</a>
 <div>
     <table class="table">
         <thead>
@@ -98,7 +101,7 @@
     </table>
 </div>
 <form asp-controller="Accounts" asp-action="Create" asp-route-customerId="@Model.Id" >
-    <input type="submit" class="btn btn-primary" value="Create Account Form" />
+    <input type="submit" class="btn btn-primary" value="Create Account" />
 </form>
 <hr/>
 <div>
