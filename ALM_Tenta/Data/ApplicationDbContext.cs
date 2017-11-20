@@ -13,7 +13,6 @@ namespace ALM_Tenta.Data
 
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Customer> Customers { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -21,16 +20,6 @@ namespace ALM_Tenta.Data
                 .HasMany(c => c.Accounts)
                 .WithOne(a => a.Customer)
                 .HasForeignKey(a => a.CustomerId);
-
-            builder.Entity<Account>()
-                .HasMany(a => a.SenderTransactions)
-                .WithOne(s => s.Sender)
-                .HasForeignKey(s => s.SenderId);
-
-            builder.Entity<Account>()
-                .HasMany(a => a.RecipentTransactions)
-                .WithOne(s => s.Recipient)
-                .HasForeignKey(s => s.RecipentId);
         }
     }
 }

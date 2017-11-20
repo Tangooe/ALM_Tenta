@@ -14,9 +14,6 @@ namespace ALM_Tenta.Models
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
 
-        public ICollection<Transaction> SenderTransactions { get; set; }
-        public ICollection<Transaction> RecipentTransactions { get; set; }
-
         public void Deposit(decimal amount) => Balance += amount;
 
         public bool Withdrawal(decimal amount)
