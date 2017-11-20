@@ -1,4 +1,5 @@
 ﻿using ALM_Tenta.Data;
+using ALM_Tenta.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,8 @@ namespace ALM_Tenta
                     o.UseSqlServer(Configuration.GetConnectionString("DefaultConnaction")));
             }
 
+            services.AddOptions();
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddMvc();
         }
 
