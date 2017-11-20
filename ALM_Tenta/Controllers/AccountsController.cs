@@ -136,6 +136,12 @@ namespace ALM_Tenta.Controllers
                 return NotFound();
             }
 
+            if (account.Balance != 0)
+            {
+                TempData["Message"] = "Cannot remove an account with money on it";
+                return RedirectToAction(nameof(Details),"Customers", account.CustomerId);
+            }
+
             return View(account);
         }
 
