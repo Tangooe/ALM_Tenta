@@ -1,4 +1,5 @@
-﻿using ALM_Tenta.Data;
+﻿using System;
+using ALM_Tenta.Data;
 using ALM_Tenta.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -50,15 +51,16 @@ namespace ALM_Tenta.Controllers
         {
             _context.Add(new Account
             {
+                AccountNumber = GetUniqueAccountNumber(),
                 Balance = 0,
                 CustomerId = customerId
             });
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Details), "Customers", new { id = customerId });
+            return RedirectToAction(nameof(Details), "Customers", new {id = customerId});
         }
 
         // POST: Accounts/Delete/5
-        [HttpPost] 
+        [HttpPost]
         public async Task<IActionResult> Delete(int accountNumber)
         {
             var account = await _context.Accounts.SingleOrDefaultAsync(m => m.AccountNumber == accountNumber);
@@ -67,7 +69,7 @@ namespace ALM_Tenta.Controllers
             _context.Accounts.Remove(account);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Details), "Customers", new { id = routeId });
+            return RedirectToAction(nameof(Details), "Customers", new {id = routeId});
         }
 
         [HttpGet]
@@ -81,6 +83,7 @@ namespace ALM_Tenta.Controllers
                 Amount = 0
             });
         }
+
         [HttpPost]
         public async Task<IActionResult> Deposit(DepositViewModel model)
         {
@@ -89,7 +92,7 @@ namespace ALM_Tenta.Controllers
             await _context.SaveChangesAsync();
 
             TempData["Message"] = $"{model.Amount} has been deposited to account {account.AccountNumber}";
-            return RedirectToAction(nameof(Details), "Customers", new { id = account.CustomerId });
+            return RedirectToAction(nameof(Details), "Customers", new {id = account.CustomerId});
         }
 
         [HttpGet]
@@ -103,6 +106,7 @@ namespace ALM_Tenta.Controllers
                 Amount = 0
             });
         }
+
         [HttpPost]
         public async Task<IActionResult> Withdrawal(DepositViewModel model)
         {
@@ -113,11 +117,11 @@ namespace ALM_Tenta.Controllers
                 await _context.SaveChangesAsync();
 
                 TempData["Message"] = $"{model.Amount} has been withdrawn from account {account.AccountNumber}";
-                return RedirectToAction(nameof(Details), "Customers", new { id = account.CustomerId });
+                return RedirectToAction(nameof(Details), "Customers", new {id = account.CustomerId});
             }
 
             TempData["Message"] = $"Failed to withdraw {model.Amount}:- from account {account.AccountNumber}";
-            return RedirectToAction(nameof(Details), "Customers", new { id = account.CustomerId });
+            return RedirectToAction(nameof(Details), "Customers", new {id = account.CustomerId});
         }
 
         [HttpGet]
@@ -132,6 +136,7 @@ namespace ALM_Tenta.Controllers
                 Amount = 0
             });
         }
+
         [HttpPost]
         public async Task<IActionResult> Transfer(TransferViewModel model)
         {
@@ -145,12 +150,15 @@ namespace ALM_Tenta.Controllers
                 reciepentAccount.Deposit(model.Amount);
                 await _context.SaveChangesAsync();
 
-                TempData["Message"] = $"{model.Amount} has been transfered from account {account.AccountNumber} to account {reciepentAccount.AccountNumber}";
-                return RedirectToAction(nameof(Details), "Customers", new { id = account.CustomerId });
+                TempData["Message"] =
+                    $"{model.Amount} has been transfered from account {account.AccountNumber} to account {reciepentAccount.AccountNumber}";
+                return RedirectToAction(nameof(Details), "Customers", new {id = account.CustomerId});
             }
 
             TempData["Message"] = $"Failed to withdraw {model.Amount}:- from account {account.AccountNumber}";
-            return RedirectToAction(nameof(Details), "Customers", new { id = account.CustomerId });
+            return RedirectToAction(nameof(Details), "Customers", new {id = account.CustomerId});
         }
+
+        private int GetUniqueAccountNumber() => _context.Accounts.Max(a => a.AccountNumber) + 1;
     }
 }
