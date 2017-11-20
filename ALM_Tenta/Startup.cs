@@ -59,7 +59,7 @@ namespace ALM_Tenta
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Customers}/{action=Index}/{id?}");
             });
 
             DbInitializer.Initialize(context, _environment);
