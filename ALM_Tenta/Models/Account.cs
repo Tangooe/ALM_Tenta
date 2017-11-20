@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ALM_Tenta.Models
 {
@@ -17,5 +18,14 @@ namespace ALM_Tenta.Models
         public ICollection<Transaction> RecipentTransactions { get; set; }
 
         public void Deposit(decimal amount) => Balance += amount;
+
+        public bool Withdrawal(decimal amount)
+        {
+            if (Balance - amount < 0)
+                return false;
+
+            Balance -= amount;
+            return true;
+        }
     }
 }

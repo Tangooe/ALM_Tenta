@@ -193,6 +193,34 @@ namespace ALM_Tenta.Controllers
             return RedirectToAction(nameof(Details), "Customers", new { id = account.CustomerId });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Withdrawal(int customerId)
+        {
+            var accounts = await _context.Accounts.Where(a => a.CustomerId == customerId).ToListAsync();
+
+            return View(new DepositViewModel
+            {
+                Accounts = new SelectList(accounts, "Id", "Name"),
+                Amount = 0
+            });
+        }
+        [HttpPost]
+        public async Task<IActionResult> Withdrawal(DepositViewModel model)
+        {
+            var account = await _context.Accounts.SingleOrDefaultAsync(m => m.Id == model.Id);
+
+            if (account.Withdrawal(model.Amount))
+            {
+                await _context.SaveChangesAsync();
+
+                TempData["Message"] = $"{model.Amount} has been withdrawn from account {account.AccountNumber}";
+                return RedirectToAction(nameof(Details), "Customers", new { id = account.CustomerId });
+            }
+
+            TempData["Message"] = $"Failed to withdraw {model.Amount}:- from account {account.AccountNumber}";
+            return RedirectToAction(nameof(Details), "Customers", new { id = account.CustomerId });
+        }
+
         private bool AccountExists(int id)
         {
             return _context.Accounts.Any(e => e.Id == id);
