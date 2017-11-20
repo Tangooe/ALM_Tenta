@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace ALM_Tenta.View_Models
+namespace ALM_Tenta.ViewModels
 {
     public class DepositViewModel
     {

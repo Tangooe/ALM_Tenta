@@ -1,4 +1,4 @@
-﻿namespace ALM_Tenta.View_Models
+﻿namespace ALM_Tenta.ViewModels
 {
     public class MailViewModel
     {
