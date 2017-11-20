@@ -61,7 +61,7 @@ namespace ALM_Tenta.Controllers
             {
                 _context.Add(account);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), "Customers", new {id = account.CustomerId});
             }
             ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", account.CustomerId);
             return View(account);
@@ -139,7 +139,7 @@ namespace ALM_Tenta.Controllers
             if (account.Balance != 0)
             {
                 TempData["Message"] = "Cannot remove an account with money on it";
-                return RedirectToAction(nameof(Details),"Customers", account.CustomerId);
+                return RedirectToAction(nameof(Details), "Customers", new { id = account.CustomerId });
             }
 
             return View(account);
