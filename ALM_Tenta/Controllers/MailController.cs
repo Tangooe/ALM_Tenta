@@ -1,5 +1,5 @@
 ﻿using ALM_Tenta.Serrvices;
-using ALM_Tenta.View_Models;
+using ALM_Tenta.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ALM_Tenta.Controllers

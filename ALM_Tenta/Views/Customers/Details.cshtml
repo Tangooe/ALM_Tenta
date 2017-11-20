@@ -1,4 +1,4 @@
-﻿@model ALM_Tenta.Models.Customer
+﻿@model Customer
 
 @{
     ViewData["Title"] = "Details";
@@ -93,7 +93,9 @@
                     @Html.DisplayFor(modelItem => item.Balance)
                 </td>
                 <td>
-                    <a class="text-danger"><i class="glyphicon glyphicon-remove"></i></a>
+                    <form asp-controller="Accounts" asp-action="Delete" asp-route-accountNumber="@item.AccountNumber" >
+                        <input type="submit" class="btn btn-primary" value="Delete" />
+                    </form>
                 </td>
             </tr>
         }
