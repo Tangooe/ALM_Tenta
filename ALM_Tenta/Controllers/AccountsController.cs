@@ -44,27 +44,40 @@ namespace ALM_Tenta.Controllers
         }
 
         // GET: Accounts/Create
-        public IActionResult Create()
-        {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id");
-            return View();
-        }
+        //public IActionResult Create()
+        //{
+        //    ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id");
+        //    return View();
+        //}
 
         // POST: Accounts/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,AccountNumber,Balance,CustomerId")] Account account)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(account);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Details), "Customers", new {id = account.CustomerId});
+        //    }
+        //    ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", account.CustomerId);
+        //    return View(account);
+        //}
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,AccountNumber,Balance,CustomerId")] Account account)
+        public async Task<IActionResult> Create(int customerId)
         {
-            if (ModelState.IsValid)
+            _context.Add(new Account
             {
-                _context.Add(account);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Details), "Customers", new {id = account.CustomerId});
-            }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "Id", "Id", account.CustomerId);
-            return View(account);
+                Balance = 0,
+                CustomerId = customerId
+            });
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), "Customers", new { id = customerId });
         }
 
         // GET: Accounts/Edit/5

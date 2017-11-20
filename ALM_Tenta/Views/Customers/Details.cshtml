@@ -97,7 +97,9 @@
         </tbody>
     </table>
 </div>
-<a asp-controller="Accounts" asp-action="Create" class="btn btn-primary">Create Account</a>
+<form asp-controller="Accounts" asp-action="Create" asp-route-customerId="@Model.Id" >
+    <input type="submit" class="btn btn-primary" value="Create Account Form" />
+</form>
 <hr/>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
